@@ -21,10 +21,12 @@ const {
     deleteProductById 
 } = require("../controllers/productController.js")
 
+
+
 router.get("/" , getAllProducts )
 router.get("/:pid", getProductById)
 router.post("/" , createProduct)
 router.put("/:pid", updatedProductById)
 router.delete("/:pid" , deleteProductById)
-console.log("✅ productsRoutes cargado");
+
 module.exports = router;

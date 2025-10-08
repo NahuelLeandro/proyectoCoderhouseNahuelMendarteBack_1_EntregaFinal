@@ -7,5 +7,5 @@ const productsRouter = require("./productsRoutes");
 
 router.use("/products", productsRouter);
 //router.use("/carts", cartsRouter);
-console.log("✅ indexRoutes cargado");
+
 module.exports = router;
