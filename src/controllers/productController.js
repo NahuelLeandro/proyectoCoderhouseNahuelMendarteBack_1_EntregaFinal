@@ -1,151 +1,53 @@
-const Product = require("../models/productModel.js");
+const productService = require("../services/productService.js");
 
-// ✅ Obtener todos los productos
-const getAllProducts = async (req, res) => {
-  console.log("📩 Se llamó al endpoint GET /api/products/");
-  try {
-    const result = await Product.find();
-    res.status(200).send({
-      status: "success",
-      payload: result,
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: "error",
-      message: error.message,
-    });
-  }
-};
-
-// ✅ Obtener producto por ID
-const getProductById = async (req, res) => {
-  console.log("📩 Se llamó al endpoint GET /api/products/:pid");
-  try {
-    const { pid } = req.params;
-    const product = await Product.findById(pid);
-
-    if (!product) {
-      return res.status(404).send({
-        status: "error",
-        message: "Producto no encontrado",
-      });
+class ProductController {
+  async getAllProducts(req, res) {
+    try {
+      const products = await productService.getAllProducts();
+      res.json({ status: "success", payload: products });
+    } catch (error) {
+      res.status(500).json({ status: "error", message: error.message });
     }
-
-    res.status(200).send({
-      status: "success",
-      payload: product,
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: "error",
-      message: error.message,
-    });
   }
-};
 
-// ✅ Crear un nuevo producto
-const createProduct = async (req, res) => {
-  console.log("📩 Se llamó al endpoint POST /api/products");
-
-  const { title, description, price, category, stock, code, status, thumbnails } = req.body;
-
-  try {
-    const result = await Product.create({
-      title,
-      description,
-      price,
-      category,
-      stock,
-      code,
-      status,
-      thumbnails,
-    });
-
-    res.status(201).send({
-      status: "success",
-      payload: result,
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: "error",
-      message: error.message,
-    });
-  }
-};
-
-// ✅ Actualizar producto por ID
-const updatedProductById = async (req, res) => {
-  console.log("📩 Se llamó al endpoint PUT /api/products/:pid");
-  const { pid } = req.params;
-  const { title, description, price, category, stock, code, status, thumbnails } = req.body;
-
-  try {
-    const product = await Product.findById(pid);
-    if (!product) {
-      return res.status(404).send({
-        status: "error",
-        message: "Producto no encontrado",
-      });
+  async getProductById(req, res) {
+    try {
+      const product = await productService.getProductById(req.params.pid);
+      res.json({ status: "success", payload: product });
+    } catch (error) {
+      res.status(404).json({ status: "error", message: error.message });
     }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      pid,
-      {
-        title: title ?? product.title,
-        description: description ?? product.description,
-        price: price ?? product.price,
-        category: category ?? product.category,
-        stock: stock ?? product.stock,
-        code: code ?? product.code,
-        status: status ?? product.status,
-        thumbnails: thumbnails ?? product.thumbnails,
-      },
-      { new: true } // devuelve el documento actualizado
-    );
-
-    res.status(200).send({
-      status: "success",
-      payload: updatedProduct,
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: "error",
-      message: error.message,
-    });
   }
-};
 
-// ✅ Eliminar producto por ID
-const deleteProductById = async (req, res) => {
-  console.log("📩 Se llamó al endpoint DELET /api/products/:pid");
-  const { pid } = req.params;
-
-  try {
-    const result = await Product.deleteOne({ _id: pid });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).send({
-        status: "error",
-        message: "Producto no encontrado",
-      });
+  async createProduct(req, res) {
+    try {
+      const created = await productService.createProduct(req.body);
+      res.status(201).json({ status: "success", payload: created });
+    } catch (error) {
+      res.status(400).json({ status: "error", message: error.message });
     }
-
-    res.status(200).send({
-      status: "success",
-      message: "Producto eliminado correctamente",
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: "error",
-      message: error.message,
-    });
   }
-};
 
-module.exports = {
-  getAllProducts,
-  getProductById,
-  createProduct,
-  updatedProductById,
-  deleteProductById,
-};
+  async updatedProductById(req, res) {
+    try {
+      const updated = await productService.updateProduct(
+        req.params.pid,
+        req.body
+      );
+      res.json({ status: "success", payload: updated });
+    } catch (error) {
+      res.status(400).json({ status: "error", message: error.message });
+    }
+  }
+
+  async deleteProductById(req, res) {
+    try {
+      const deleted = await productService.deleteProduct(req.params.pid);
+      res.json({ status: "success", payload: deleted });
+    } catch (error) {
+      res.status(400).json({ status: "error", message: error.message });
+    }
+  }
+}
+
+module.exports = new ProductController();

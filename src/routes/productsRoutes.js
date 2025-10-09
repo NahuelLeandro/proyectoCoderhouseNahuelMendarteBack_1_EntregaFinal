@@ -12,21 +12,12 @@
 
 const express = require("express");
 const router = express.Router();
+const productController = require("../controllers/productController.js");
 
-const { 
-    getAllProducts, 
-    getProductById,
-    createProduct, 
-    updatedProductById, 
-    deleteProductById 
-} = require("../controllers/productController.js")
-
-
-
-router.get("/" , getAllProducts )
-router.get("/:pid", getProductById)
-router.post("/" , createProduct)
-router.put("/:pid", updatedProductById)
-router.delete("/:pid" , deleteProductById)
+router.get("/", productController.getAllProducts);
+router.get("/:pid", productController.getProductById);
+router.post("/", productController.createProduct);
+router.put("/:pid", productController.updatedProductById);
+router.delete("/:pid", productController.deleteProductById);
 
 module.exports = router;
