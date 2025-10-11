@@ -16,10 +16,6 @@ class ProductService {
         if (!title || !price || !code)
         throw new Error("Campos obligatorios faltantes");
 
-        // Verificar si ya existe un producto con ese código
-        // const existing = await productDAO.findOne({ code });
-        // if (existing) throw new Error("El código ya está en uso");
-
         return await productDAO.create(data);
     }
 

@@ -12,26 +12,14 @@
 
 const express = require("express");
 const router = express.Router();
+const cartController = require("../controllers/cartController.js");
 
-const {
-    createCart,
-    getCartById,
-    addProductToCart,
-    deleteProductFromCart,
-    updateProductQuantity,
-    replaceCartProducts,
-    clearCart
-} = require("../controllers/cartsController.js");
-
-
-router.post("/", createCart);// Crear nuevo carrito
-router.get("/:cid", getCartById);// Obtener carrito por ID
-router.post("/:cid/product/:pid", addProductToCart);// Agregar producto al carrito
-router.delete("/:cid/products/:pid", deleteProductFromCart);// Eliminar producto específico del carrito
-router.put("/:cid/products/:pid", updateProductQuantity);// Actualizar cantidad de un producto específico
-router.put("/:cid", replaceCartProducts);// Reemplazar todo el contenido del carrito
-router.delete("/:cid", clearCart);// Vaciar carrito completo
-
-
+router.post("/", cartController.createCart);                       // Crear nuevo carrito
+router.get("/:cid", cartController.getCartById);                   // Obtener carrito por ID (con populate)
+router.post("/:cid/product/:pid", cartController.addProductToCart);// Agregar producto al carrito
+router.delete("/:cid/products/:pid", cartController.deleteProductFromCart);// Eliminar producto específico
+router.put("/:cid/products/:pid", cartController.updateProductQuantity);// Actualizar cantidad
+router.put("/:cid", cartController.replaceCartProducts);           // Reemplazar todo el carrito
+router.delete("/:cid", cartController.clearCart);                  // Vaciar carrito completo
 
 module.exports = router;
