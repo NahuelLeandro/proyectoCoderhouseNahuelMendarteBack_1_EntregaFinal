@@ -1,0 +1,36 @@
+<div class="products">
+    <h1 class="products__title">🛍️ Lista de Productos</h1>
+
+    {{!-- Verifica si hay productos --}}
+    {{#if productos.length}}
+        <div class="products__grid">
+        {{#each productos}}
+            <div class="product-card">
+            {{!-- Imagen principal si existe --}}
+            {{#if this.thumbnails.length}}
+                <img src="{{this.thumbnails.[0]}}" alt="{{this.title}}" class="product-card__image">
+            {{else}}
+                <div class="product-card__no-image">
+                <span>Sin imagen</span>
+                </div>
+            {{/if}}
+
+            <h2 class="product-card__title">{{this.title}}</h2>
+            <p class="product-card__description">{{this.description}}</p>
+            <p><strong>Precio:</strong> ${{this.price}}</p>
+            <p><strong>Categoría:</strong> {{this.category}}</p>
+            <p><strong>Stock:</strong> {{this.stock}}</p>
+
+            {{!-- Estado del producto --}}
+            {{#if this.status}}
+                <span class="product-card__status--available">🟢 Disponible</span>
+            {{else}}
+                <span class="product-card__status--unavailable">🔴 No disponible</span>
+            {{/if}}
+            </div>
+        {{/each}}
+        </div>
+    {{else}}
+        <p class="products__empty">No hay productos disponibles en este momento 😔</p>
+    {{/if}}
+</div>

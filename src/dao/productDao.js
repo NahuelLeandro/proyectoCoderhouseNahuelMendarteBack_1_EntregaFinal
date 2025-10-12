@@ -2,11 +2,11 @@ const Product = require("../models/productModel.js");
 
 class ProductDAO {
     async getAll() {
-        return await Product.find();
+        return await Product.find().lean();
     }
 
     async getById(id) {
-        return await Product.findById(id);
+        return await Product.findById(id).lean();
     }
 
     async create(data) {
@@ -19,7 +19,7 @@ class ProductDAO {
     }
 
     async deleteById(id) {
-        return await Product.findByIdAndDelete(id);
+        return await Product.findByIdAndDelete(id).lean();
     }
 }
 
