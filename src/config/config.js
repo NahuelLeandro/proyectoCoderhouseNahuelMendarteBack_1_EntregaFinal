@@ -4,6 +4,7 @@ module.exports = {
     PORT: 8080,
     paths: {
         public: path.join(__dirname, "../../public"),
-        app: path.join(__dirname, "../server.js" ),
-    },
+        views: path.join(__dirname, "../views"),
+        uploads: path.join(__dirname, "../uploads")
+    }
 };
